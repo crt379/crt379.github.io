@@ -27,7 +27,7 @@
 <meta property="og:description" content="示例 c代码 1234567#include &lt;stdio.h&gt;int main() &#123;   &#x2F;&#x2F; printf() displays the string inside quotation   printf(&quot;Hello, World!&quot;);   return 0;&#125;  1 12345678910111213141516171819202122">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-06-10T15:49:04.000Z">
-<meta property="article:modified_time" content="2024-06-13T13:09:40.746Z">
+<meta property="article:modified_time" content="2024-06-13T13:48:08.499Z">
 <meta property="article:author" content="crt">
 <meta property="article:tag" content="Assembly">
 <meta property="article:tag" content="Gas">
@@ -338,7 +338,7 @@
                 <!-- 文章字数统计 -->
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">2.7k</span>阅读时长: <span class="post-count reading-time">11 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">2.8k</span>阅读时长: <span class="post-count reading-time">11 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -573,19 +573,80 @@
 </ul>
 <h2 id="leaq-L-str-rip-rdi"><a href="#leaq-L-str-rip-rdi" class="headerlink" title="leaq	.L.str(%rip), %rdi"></a>leaq	.L.str(%rip), %rdi</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lea指令</span><br><span class="line">load effective address, 加载有效地址，可以将有效地址传送到指定的的寄存器。指令形式是从存储器读数据到寄存器, 效果是将存储器的有效地址写入到目的操作数, 简单说, 就是C语言中的”&amp;”.</span><br><span class="line"></span><br><span class="line">lea这个指令除了获取地址以外，还有一个“奇怪”的用法，它可以用计算地址的方法，实际上对寄存器的值同时完成加法和乘法的计算，相当于一个三元计算，并且只使用一个时钟周期。比如：lea 0x20(,%eax,2) %eax，本来是用来算一个地址，结果被用来一次性的做了一个乘法和一个加法计算。</span><br></pre></td></tr></table></figure>
 
-<p>leaq .L.str(%rip), %rdi 是一个间接内存访问。基数是%rip，也就是指令寄存器中的值，也就是leaq这行代码的下一行代码的地址。.L.str会被汇编器算出一个直接数来，比如0x20，也就是32个字节。这行指令就等价于：0x20(%rip)。</p>
+<p>leaq .L.str(%rip), %rdi 是一个间接内存访问。基数是%rip，也就是指令寄存器中的值，也就是leaq这行代码的下一行代码的地址。.L.str会被汇编器算出一个直接数来，比如0x20，也就是32个字节。这行指令就等价于：0x20(%rip)。0x20是什么意思？就是这个字符串常量的地址与%rip值的差。这种寻址方式叫做rip相对寻址。因为代码区在下面，静态数据区在上面，所以静态数据的地址一定大于指令的地址。</p>
+<h2 id="syscall-调用约定"><a href="#syscall-调用约定" class="headerlink" title="syscall 调用约定"></a>syscall 调用约定</h2><table>
+<thead>
+<tr>
+<th>arch</th>
+<th>syscall NR</th>
+<th>return</th>
+<th>arg0</th>
+<th>arg1</th>
+<th>arg2</th>
+<th>arg3</th>
+<th>arg4</th>
+<th>arg5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>arm</td>
+<td>r7</td>
+<td>r0</td>
+<td>r0</td>
+<td>r1</td>
+<td>r2</td>
+<td>r3</td>
+<td>r4</td>
+<td>r5</td>
+</tr>
+<tr>
+<td>arm64</td>
+<td>x8</td>
+<td>x0</td>
+<td>x0</td>
+<td>x1</td>
+<td>x2</td>
+<td>x3</td>
+<td>x4</td>
+<td>x5</td>
+</tr>
+<tr>
+<td>x86</td>
+<td>eax</td>
+<td>eax</td>
+<td>ebx</td>
+<td>ecx</td>
+<td>edx</td>
+<td>esi</td>
+<td>edi</td>
+<td>ebp</td>
+</tr>
+<tr>
+<td>x86_64</td>
+<td>rax</td>
+<td>rax</td>
+<td>rdi</td>
+<td>rsi</td>
+<td>rdx</td>
+<td>r10</td>
+<td>r8</td>
+<td>r9</td>
+</tr>
+</tbody></table>
+<h2 id="int"><a href="#int" class="headerlink" title="int"></a>int</h2><p>int表示中断，数字0x80表示中断号。中断将程序流转移到处理该中断的程序，0x80在本例中为中断。在 Linux 中，0x80中断处理程序是内核，用于其他程序对内核进行系统调用。</p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/21624155/difference-between-equ-and-word-in-arm-assembly">ARM 汇编中 .equ 和 .word 有什么区别？</a></p>
 <h2 id="equ"><a href="#equ" class="headerlink" title=".equ"></a>.equ</h2><p>.equ就像#define在 C 中一样：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define bob 10</span><br><span class="line">.equ bob, 10</span><br></pre></td></tr></table></figure>
 <p>类型</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.equ x, 123</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mov $x, %eax</span><br><span class="line">/* eax == 123 */</span><br></pre></td></tr></table></figure>
+
 
 <h2 id="word"><a href="#word" class="headerlink" title=".word"></a>.word</h2><p>.word就像unsigned int在 C 中一样：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unsigned int ted;</span><br><span class="line">ted: </span><br><span class="line">.word 0</span><br></pre></td></tr></table></figure>
 <p>或者用一个值初始化：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unsigned int alice = 42;</span><br><span class="line">alice:</span><br><span class="line">.word 42</span><br></pre></td></tr></table></figure>
 
-<h2 id="int"><a href="#int" class="headerlink" title="int"></a>int</h2><p>int表示中断，数字0x80表示中断号。中断将程序流转移到处理该中断的程序，0x80在本例中为中断。在 Linux 中，0x80中断处理程序是内核，用于其他程序对内核进行系统调用。</p>
-<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/21624155/difference-between-equ-and-word-in-arm-assembly">ARM 汇编中 .equ 和 .word 有什么区别？</a></p>
+
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zoomdy/article/details/80700750">.cfi_* 汇编指示符</a></li>
 <li><a target="_blank" rel="noopener" href="https://en.wikibooks.org/wiki/X86_Assembly/GNU_assembly_syntax">x86 汇编&#x2F;GNU 汇编语法</a></li>
@@ -612,7 +673,7 @@
             <p>原文作者：<a href="https://crt379.github.io">crt</a>
             <p>原文链接：<a href="https://crt379.github.io/2024/06/10/%E4%BB%8Ehello%E5%AD%A6%E4%B9%A0%E6%B1%87%E7%BC%962/">https://crt379.github.io/2024/06/10/%E4%BB%8Ehello%E5%AD%A6%E4%B9%A0%E6%B1%87%E7%BC%962/</a>
             <p>发表日期：<a href="https://crt379.github.io/2024/06/10/%E4%BB%8Ehello%E5%AD%A6%E4%B9%A0%E6%B1%87%E7%BC%962/">2024-06-10 23:49:04</a>
-            <p>更新日期：<a href="https://crt379.github.io/2024/06/10/%E4%BB%8Ehello%E5%AD%A6%E4%B9%A0%E6%B1%87%E7%BC%962/">2024-06-13 21:09:40</a>
+            <p>更新日期：<a href="https://crt379.github.io/2024/06/10/%E4%BB%8Ehello%E5%AD%A6%E4%B9%A0%E6%B1%87%E7%BC%962/">2024-06-13 21:48:08</a>
             <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -763,7 +824,7 @@
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>目录</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.</span> <span class="toc-text">示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">运行方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E6%88%90"><span class="toc-number">2.</span> <span class="toc-text">组成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#p2align"><span class="toc-number">3.</span> <span class="toc-text">.p2align</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cfi-%E6%B1%87%E7%BC%96%E6%8C%87%E7%A4%BA%E7%AC%A6"><span class="toc-number">4.</span> <span class="toc-text">.cfi_* 汇编指示符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cfi-def-cfa-offset"><span class="toc-number">5.</span> <span class="toc-text">.cfi_def_cfa_offset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cfi-offset"><span class="toc-number">6.</span> <span class="toc-text">.cfi_offset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cfi-def-cfa-register"><span class="toc-number">7.</span> <span class="toc-text">.cfi_def_cfa_register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pushq-rbp"><span class="toc-number">8.</span> <span class="toc-text">pushq %rbp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#x86%EF%BC%8832-%E4%BD%8D%E5%92%8C-64-%E4%BD%8D%EF%BC%89%E5%AF%BB%E5%9D%80%E6%A8%A1%E5%BC%8F"><span class="toc-number">9.</span> <span class="toc-text">x86（32 位和 64 位）寻址模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8"><span class="toc-number">9.1.</span> <span class="toc-text">如何使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#movl-0-4-rbp"><span class="toc-number">10.</span> <span class="toc-text">movl	$0, -4(%rbp)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#subq-16-rsp"><span class="toc-number">11.</span> <span class="toc-text">subq	$16, %rsp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#leaq-L-str-rip-rdi"><span class="toc-number">12.</span> <span class="toc-text">leaq	.L.str(%rip), %rdi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#equ"><span class="toc-number">13.</span> <span class="toc-text">.equ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#word"><span class="toc-number">14.</span> <span class="toc-text">.word</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#int"><span class="toc-number">15.</span> <span class="toc-text">int</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">16.</span> <span class="toc-text">参考</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.</span> <span class="toc-text">示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">运行方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E6%88%90"><span class="toc-number">2.</span> <span class="toc-text">组成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#p2align"><span class="toc-number">3.</span> <span class="toc-text">.p2align</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cfi-%E6%B1%87%E7%BC%96%E6%8C%87%E7%A4%BA%E7%AC%A6"><span class="toc-number">4.</span> <span class="toc-text">.cfi_* 汇编指示符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cfi-def-cfa-offset"><span class="toc-number">5.</span> <span class="toc-text">.cfi_def_cfa_offset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cfi-offset"><span class="toc-number">6.</span> <span class="toc-text">.cfi_offset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cfi-def-cfa-register"><span class="toc-number">7.</span> <span class="toc-text">.cfi_def_cfa_register</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pushq-rbp"><span class="toc-number">8.</span> <span class="toc-text">pushq %rbp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#x86%EF%BC%8832-%E4%BD%8D%E5%92%8C-64-%E4%BD%8D%EF%BC%89%E5%AF%BB%E5%9D%80%E6%A8%A1%E5%BC%8F"><span class="toc-number">9.</span> <span class="toc-text">x86（32 位和 64 位）寻址模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8"><span class="toc-number">9.1.</span> <span class="toc-text">如何使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#movl-0-4-rbp"><span class="toc-number">10.</span> <span class="toc-text">movl	$0, -4(%rbp)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#subq-16-rsp"><span class="toc-number">11.</span> <span class="toc-text">subq	$16, %rsp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#leaq-L-str-rip-rdi"><span class="toc-number">12.</span> <span class="toc-text">leaq	.L.str(%rip), %rdi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#syscall-%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A"><span class="toc-number">13.</span> <span class="toc-text">syscall 调用约定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#int"><span class="toc-number">14.</span> <span class="toc-text">int</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#equ"><span class="toc-number">15.</span> <span class="toc-text">.equ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#word"><span class="toc-number">16.</span> <span class="toc-text">.word</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">17.</span> <span class="toc-text">参考</span></a></li></ol>
             </div>
         
         <!-- sidebar -->
