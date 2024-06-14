@@ -429,6 +429,53 @@
             
         
         <article class="index-post">
+            <a class="abstract-title" href="/2024/06/13/c%E4%B8%AD%E7%BC%96%E5%86%99-%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96/">
+                
+                <span class="abstract-title-text">c中编写/使用汇编</span>
+            </a>
+            <div class="abstract-content">
+                函数调用传参约定在 Linux x86 中，使用 gcc 编译器进行程序编译时，函数调用时的参数传递规则如下：
+
+函数参数通过栈传递，按照从右往左的顺序入栈
+函数返回值保存在寄存器 eax 中
+
+在 Linux x86_64 中，函数调用时的参数传递规则如下：
+
+前 6 个参数按从左往右的顺序分别通过寄存器 rdi、rsi、rdx、rcx、r8、r9，剩下的参数按从右往左的顺序通过栈传递
+函数返回值保存在寄存器 rax 中
+
+函数调用时的参数传递规则实际上与函数调用约定有关，与编译器无关，常见的函数调用约定包括 c调用约定、std调用约定、x86 fastcall约定以及 C++调用约定...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2024/06/14">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/06/13</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Gas">Gas</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="C">C</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
             <a class="abstract-title" href="/2024/06/12/docker%E6%90%AD%E5%BB%BAetcd%E9%9B%86%E7%BE%A4/">
                 
                 <span class="abstract-title-text">docker搭建etcd集群</span>
@@ -519,7 +566,7 @@ c代码
             
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/06/13">
+                <div class="abstract-date" title="Last updated: 2024/06/14">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/06/10</span>
                 </div>
                 <!-- tags -->
@@ -832,58 +879,11 @@ activate 报错解决123456789PS ...
         </article>
         <div class="index-post-divider"></div>
     
-        
-        
-        
-        
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2024/04/28/podman/">
-                
-                <span class="abstract-title-text">Podman学习</span>
-            </a>
-            <div class="abstract-content">
-                Podman是一个无守护进程的容器引擎，它不需要在系统上运行任何守护进程或守护程序。它使用与OCI（Open Container Initiative）兼容的容器运行时（如runc、crun、runv等）与操作系统交互并创建正在运行的容器。
-podman 结构及相关组件
-容器
-
-conmon 是容器守护进程，负责一对一监控和管理每个 podman 容器
-runc 负责提供容器运行时环境。用 Go 语言实现的 OCI
-
-
-镜像
-
-buildah 负责构建镜像
-skopeo 负责与 images registry 交互。用来 pull&#x2F;push&#x2F;管理镜像
-
-
-存储
-
-st...
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2024/06/12">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/04/28</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Podman">Podman</a>
-    
-</div>
-
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
     <!-- paginator  -->
+    
+        <nav class="page-nav">
+            <span class="page-number current">1</span><a class="page-number" href="/archives/2024/page/2/">2</a><a class="extend next" rel="next" href="/archives/2024/page/2/">NEXT &gt;</a>
+        </nav>
     
 </main>
 
@@ -1029,7 +1029,20 @@ st...
         
         
         
+        
+        
+        
+        
+        
     
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -1080,7 +1093,7 @@ st...
     
     <div class="total-and-search">
         <div class="total-archive">
-        总数 : 10
+        总数 : 11
         </div>
         <!-- search  -->
         
@@ -1094,6 +1107,12 @@ st...
             <div class="archive-year"> 2024 </div>
             <ul class="year-list">
             
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/13</span>
+            <a class="archive-post-title" href="/2024/06/13/c%E4%B8%AD%E7%BC%96%E5%86%99-%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96/">c中编写/使用汇编</a>
+        </li>
+    
         
         <li class="archive-post-item">
             <span class="archive-post-date">06/12</span>
@@ -1223,6 +1242,11 @@ st...
             <span class="sidebar-tag-name" data-tags="Gas">
                 <span class="iconfont-archer">&#xe606;</span>
                 Gas
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="C">
+                <span class="iconfont-archer">&#xe606;</span>
+                C
             </span>
         
     </div>
